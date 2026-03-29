@@ -2,16 +2,16 @@ import React from 'react';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { colors, spacing, typography } from '../../constants/theme';
 
-const BANNER_URI =
-  'https://images.unsplash.com/photo-1490118121068-9d4e5f5e5b0a?w=1200&q=80';
+const BANNER = require('../../../assets/images/banner.png');
 
 export function Banner() {
   return (
     <View style={styles.wrap}>
       <ImageBackground
-        source={{ uri: BANNER_URI }}
+        source={BANNER}
         style={styles.image}
         imageStyle={styles.imageRadius}
+        resizeMode="cover"
       >
         <View style={styles.overlay} />
         <View style={styles.content}>
@@ -32,35 +32,53 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   image: {
-    minHeight: 180,
-    justifyContent: 'flex-end',
+    minHeight: 200,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
   },
   imageRadius: {
     borderRadius: 2,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(13, 13, 13, 0.35)',
+    backgroundColor: 'rgba(13, 13, 13, 0.12)',
   },
   content: {
-    padding: spacing.lg,
+    paddingTop: spacing.lg,
+    paddingRight: spacing.md,
+    paddingLeft: spacing.sm,
+    paddingBottom: spacing.md,
+    maxWidth: '58%',
+    alignItems: 'flex-end',
   },
   kicker: {
     ...typography.caption,
     color: colors.white,
     marginBottom: spacing.xs,
     opacity: 0.95,
+    textAlign: 'right',
+    textShadowColor: 'rgba(0,0,0,0.35)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   title: {
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: '300',
     color: colors.white,
-    letterSpacing: 2,
+    letterSpacing: 1.5,
     marginBottom: spacing.xs,
+    textAlign: 'right',
+    textShadowColor: 'rgba(0,0,0,0.4)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
   },
   sub: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.85)',
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.92)',
     letterSpacing: 0.3,
+    textAlign: 'right',
+    textShadowColor: 'rgba(0,0,0,0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
 });
