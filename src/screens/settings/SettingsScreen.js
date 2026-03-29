@@ -3,10 +3,17 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, spacing, typography } from '../../constants/theme';
 
+function getRootNavigation(navigation) {
+  let nav = navigation;
+  while (nav.getParent?.()) {
+    nav = nav.getParent();
+  }
+  return nav;
+}
+
 export function SettingsScreen({ navigation }) {
   const logout = () => {
-    const root = navigation.getParent()?.getParent();
-    root?.reset({
+    getRootNavigation(navigation).reset({
       index: 0,
       routes: [{ name: 'SignIn' }],
     });
@@ -17,11 +24,11 @@ export function SettingsScreen({ navigation }) {
       <Text style={styles.title}>Settings</Text>
       <View style={styles.card}>
         <Text style={styles.label}>Name</Text>
-        <Text style={styles.value}>James Mercer</Text>
+        <Text style={styles.value}>John Wick</Text>
         <Text style={[styles.label, styles.gap]}>Email</Text>
-        <Text style={styles.value}>james.mercer@example.com</Text>
+        <Text style={styles.value}>johnwick1985r@example.com</Text>
         <Text style={[styles.label, styles.gap]}>Member since</Text>
-        <Text style={styles.value}>2024</Text>
+        <Text style={styles.value}>2026</Text>
       </View>
       <Pressable style={styles.logout} onPress={logout}>
         <Text style={styles.logoutText}>Logout</Text>

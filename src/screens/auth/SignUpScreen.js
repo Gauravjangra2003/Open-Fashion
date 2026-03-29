@@ -15,6 +15,7 @@ import { colors, spacing, typography } from '../../constants/theme';
 export function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const submit = () => {
     navigation.replace('Main');
@@ -48,6 +49,15 @@ export function SignUpScreen({ navigation }) {
             secureTextEntry
             value={password}
             onChangeText={setPassword}
+          />
+          <Text style={styles.label}>Confirm Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="••••••••"
+            placeholderTextColor={colors.textMuted}
+            secureTextEntry
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
           />
           <Pressable style={styles.primary} onPress={submit}>
             <Text style={styles.primaryText}>Sign Up</Text>
