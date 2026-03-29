@@ -1,0 +1,58 @@
+[
+  {
+    "id": "1",
+    "name": "Merino Wool Crewneck",
+    "price": 189,
+    "image": "https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?w=800&q=80",
+    "category": "Knitwear"
+  },
+  {
+    "id": "2",
+    "name": "Tailored Wool Overcoat",
+    "price": 520,
+    "image": "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=800&q=80",
+    "category": "Outerwear"
+  },
+  {
+    "id": "3",
+    "name": "Slim Fit Oxford Shirt",
+    "price": 98,
+    "image": "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&q=80",
+    "category": "Shirts"
+  },
+  {
+    "id": "4",
+    "name": "Italian Linen Blazer",
+    "price": 340,
+    "image": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&q=80",
+    "category": "Blazers"
+  },
+  {
+    "id": "5",
+    "name": "Selvedge Denim Jeans",
+    "price": 165,
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&q=80",
+    "category": "Denim"
+  },
+  {
+    "id": "6",
+    "name": "Cashmere Scarf",
+    "price": 125,
+    "image": "https://images.unsplash.com/photo-1520903920243-4ae17f7b8c0e?w=800&q=80",
+    "category": "Accessories"
+  },
+  {
+    "id": "7",
+    "name": "Leather Chelsea Boots",
+    "price": 395,
+    "image": "https://images.unsplash.com/photo-1614252369475-1e8f5e0c4b0a?w=800&q=80",
+    "category": "Footwear"
+  },
+  {
+    "id": "8",
+    "name": "Technical Parka",
+    "price": 450,
+    "image": "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=800&q=80",
+    "category": "Outerwear"
+  }
+]
