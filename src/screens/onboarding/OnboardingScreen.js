@@ -11,7 +11,10 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, spacing, typography } from '../../constants/theme';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+/** Tall enough to show full portraits without harsh cropping; `contain` scales inside this box. */
+const ONBOARDING_IMAGE_HEIGHT = Math.min(SCREEN_HEIGHT * 0.52, SCREEN_WIDTH * 1.35);
 
 const SLIDES = [
   {
@@ -56,6 +59,8 @@ export function OnboardingScreen({ navigation }) {
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
       <FlatList
         ref={listRef}
+        style={styles.list}
+        contentContainerStyle={styles.listContent}
         data={SLIDES}
         horizontal
         pagingEnabled
@@ -63,14 +68,14 @@ export function OnboardingScreen({ navigation }) {
         keyExtractor={(item) => item.key}
         onMomentumScrollEnd={onScroll}
         renderItem={({ item }) => (
-          <View style={{ width: SCREEN_WIDTH }}>
+          <View style={styles.slide}>
             <View style={styles.imageWrap}>
               <Image
                 source={item.image}
                 style={styles.image}
-                resizeMode="cover"
+                resizeMode="contain"
               />
-              <View style={styles.imageOverlay} />
+              <View style={styles.imageOverlay} pointerEvents="none" />
             </View>
             <View style={styles.textBlock}>
               <Text style={styles.title}>{item.title}</Text>
@@ -101,9 +106,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
+  list: {
+    flex: 1,
+  },
+  listContent: {
+    flexGrow: 1,
+  },
+  slide: {
+    width: SCREEN_WIDTH,
+    flex: 1,
+    alignSelf: 'stretch',
+  },
   imageWrap: {
-    height: '58%',
-    backgroundColor: colors.border,
+    width: SCREEN_WIDTH,
+    height: ONBOARDING_IMAGE_HEIGHT,
+    backgroundColor: colors.background,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   image: {
     width: '100%',
@@ -111,12 +130,13 @@ const styles = StyleSheet.create({
   },
   imageOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(13,13,13,0.12)',
+    backgroundColor: 'rgba(13,13,13,0.06)',
   },
   textBlock: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xl,
     flex: 1,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
+    justifyContent: 'center',
   },
   title: {
     ...typography.title,
