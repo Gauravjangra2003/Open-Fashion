@@ -3,6 +3,7 @@ import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, spacing, typography } from '../../constants/theme';
 import { useStore } from '../../context/StoreContext';
+import { productImageSource } from '../../utils/imageSource';
 
 export function WishlistScreen() {
   const { wishlistProducts, toggleWishlist } = useStore();
@@ -20,7 +21,7 @@ export function WishlistScreen() {
         }
         renderItem={({ item }) => (
           <View style={styles.row}>
-            <Image source={{ uri: item.image }} style={styles.thumb} />
+            <Image source={productImageSource(item.image)} style={styles.thumb} />
             <View style={styles.meta}>
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.price}>${item.price}</Text>

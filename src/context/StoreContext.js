@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
-import productsData from '../data/products.json';
+import productsData from '../data/products';
 
 const StoreContext = createContext(null);
 

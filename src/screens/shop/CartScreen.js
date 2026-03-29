@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, spacing, typography } from '../../constants/theme';
 import { useStore } from '../../context/StoreContext';
+import { productImageSource } from '../../utils/imageSource';
 
 export function CartScreen({ navigation }) {
   const {
@@ -32,7 +33,7 @@ export function CartScreen({ navigation }) {
             if (!p) return null;
             return (
               <View key={line.productId} style={styles.row}>
-                <Image source={{ uri: p.image }} style={styles.thumb} />
+                <Image source={productImageSource(p.image)} style={styles.thumb} />
                 <View style={styles.meta}>
                   <Text style={styles.name}>{p.name}</Text>
                   <Text style={styles.price}>${p.price}</Text>
@@ -72,9 +73,7 @@ export function CartScreen({ navigation }) {
           </View>
           <Pressable
             style={styles.checkout}
-            onPress={() =>
-              navigation.getParent()?.getParent()?.navigate('Checkout')
-            }
+            onPress={() => navigation.navigate('Checkout')}
           >
             <Text style={styles.checkoutText}>Checkout</Text>
           </Pressable>

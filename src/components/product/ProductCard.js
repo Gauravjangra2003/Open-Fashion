@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { colors, spacing, typography } from '../../constants/theme';
 import { useStore } from '../../context/StoreContext';
+import { productImageSource } from '../../utils/imageSource';
 
 export function ProductCard({ product, onPress }) {
   const { toggleWishlist, isInWishlist, addToCart } = useStore();
@@ -17,7 +18,7 @@ export function ProductCard({ product, onPress }) {
   return (
     <Pressable style={styles.card} onPress={() => onPress?.(product)}>
       <View style={styles.imageWrap}>
-        <Image source={{ uri: product.image }} style={styles.image} />
+        <Image source={productImageSource(product.image)} style={styles.image} />
         <Pressable
           style={styles.heartBtn}
           onPress={() => toggleWishlist(product.id)}

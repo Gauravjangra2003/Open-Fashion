@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, spacing, typography } from '../../constants/theme';
 import { useStore } from '../../context/StoreContext';
+import { productImageSource } from '../../utils/imageSource';
 
 export function ProductDetailScreen({ route, navigation }) {
   const { productId } = route.params;
@@ -43,7 +44,7 @@ export function ProductDetailScreen({ route, navigation }) {
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.imageWrap}>
-          <Image source={{ uri: product.image }} style={styles.image} />
+          <Image source={productImageSource(product.image)} style={styles.image} />
         </View>
         <View style={styles.body}>
           <Text style={styles.cat}>{product.category}</Text>
