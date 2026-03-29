@@ -16,22 +16,19 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const SLIDES = [
   {
     key: '1',
-    image:
-      'https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?w=900&q=80',
+    image: require('../../../assets/images/Onboarding1.png'),
     title: 'Curated tailoring',
     subtitle: 'Precision cuts and quiet luxury for every day.',
   },
   {
     key: '2',
-    image:
-      'https://images.unsplash.com/photo-1490118121068-9d4e5f5e5b0a?w=900&q=80',
+    image: require('../../../assets/images/Onboarding2.jpeg'),
     title: 'Seasonal essentials',
     subtitle: 'Layered textures in neutral palettes.',
   },
   {
     key: '3',
-    image:
-      'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=900&q=80',
+    image: require('../../../assets/images/Onboarding3.png'),
     title: 'Your wardrobe, refined',
     subtitle: 'Discover menswear designed to last.',
   },
@@ -68,7 +65,11 @@ export function OnboardingScreen({ navigation }) {
         renderItem={({ item }) => (
           <View style={{ width: SCREEN_WIDTH }}>
             <View style={styles.imageWrap}>
-              <Image source={{ uri: item.image }} style={styles.image} />
+              <Image
+                source={item.image}
+                style={styles.image}
+                resizeMode="cover"
+              />
               <View style={styles.imageOverlay} />
             </View>
             <View style={styles.textBlock}>
