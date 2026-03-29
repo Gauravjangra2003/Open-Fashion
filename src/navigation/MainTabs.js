@@ -58,11 +58,12 @@ export function MainTabs() {
         }}
       />
       <Tab.Screen
-        name="Settings"
+        name="Profile"
         component={SettingsScreen}
         options={{
+          tabBarLabel: 'Profile',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" size={size} color={color} />
+            <Ionicons name="person-outline" size={size} color={color} />
           ),
         }}
       />

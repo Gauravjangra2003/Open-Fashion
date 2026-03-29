@@ -81,7 +81,7 @@ export function HomeScreen({ navigation }) {
             ) : null}
           </Pressable>
           <Pressable
-            onPress={() => navigation.navigate('Settings')}
+            onPress={() => navigation.navigate('Profile')}
             hitSlop={8}
           >
             <View style={styles.avatar}>
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   row: {
-    justifyContent: 'space-between',
+    flexDirection: 'row',
     paddingHorizontal: spacing.md,
   },
   empty: {

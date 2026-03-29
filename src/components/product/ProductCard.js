@@ -48,8 +48,9 @@ export function ProductCard({ product, onPress }) {
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    minWidth: '46%',
-    maxWidth: '48%',
+    flexBasis: 0,
+    minWidth: 0,
+    marginHorizontal: spacing.xs,
     marginBottom: spacing.lg,
     backgroundColor: colors.white,
     borderWidth: 1,

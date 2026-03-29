@@ -21,7 +21,7 @@ export function SettingsScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-      <Text style={styles.title}>Settings</Text>
+      <Text style={styles.title}>Profile</Text>
       <View style={styles.card}>
         <Text style={styles.label}>Name</Text>
         <Text style={styles.value}>John Wick</Text>
