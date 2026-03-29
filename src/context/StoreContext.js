@@ -31,6 +31,10 @@ export function StoreProvider({ children }) {
     setCart((prev) => prev.filter((item) => item.productId !== productId));
   }, []);
 
+  const clearCart = useCallback(() => {
+    setCart(() => []);
+  }, []);
+
   const updateCartQuantity = useCallback((productId, quantity) => {
     if (quantity < 1) {
       removeFromCart(productId);
@@ -84,6 +88,7 @@ export function StoreProvider({ children }) {
       getProductById,
       addToCart,
       removeFromCart,
+      clearCart,
       updateCartQuantity,
       toggleWishlist,
       isInWishlist,
@@ -98,6 +103,7 @@ export function StoreProvider({ children }) {
       getProductById,
       addToCart,
       removeFromCart,
+      clearCart,
       updateCartQuantity,
       toggleWishlist,
       isInWishlist,

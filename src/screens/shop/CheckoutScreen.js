@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { InteractionManager, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PaymentSuccessModal } from '../../components/checkout';
 import { colors, spacing, typography } from '../../constants/theme';
@@ -13,8 +13,15 @@ function randomPaymentId() {
     .toUpperCase()}`;
 }
 
+function goHome(navigation) {
+  navigation.navigate('Main', {
+    screen: 'Home',
+    params: { screen: 'HomeFeed' },
+  });
+}
+
 export function CheckoutScreen({ navigation }) {
-  const { cartTotal } = useStore();
+  const { cartTotal, clearCart } = useStore();
   const [modalVisible, setModalVisible] = useState(false);
   const [paymentId, setPaymentId] = useState('');
 
@@ -23,17 +30,14 @@ export function CheckoutScreen({ navigation }) {
     setModalVisible(true);
   };
 
-  const handleSubmit = () => {
+  /** One path for both modal buttons: clear cart, close modal, then go home after state settles. */
+  const finishAfterPayment = useCallback(() => {
+    clearCart();
     setModalVisible(false);
-  };
-
-  const handleBackHome = () => {
-    setModalVisible(false);
-    navigation.navigate('Main', {
-      screen: 'Home',
-      params: { screen: 'HomeFeed' },
+    InteractionManager.runAfterInteractions(() => {
+      goHome(navigation);
     });
-  };
+  }, [clearCart, navigation]);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
@@ -57,8 +61,7 @@ export function CheckoutScreen({ navigation }) {
       <PaymentSuccessModal
         visible={modalVisible}
         paymentId={paymentId}
-        onSubmit={handleSubmit}
-        onBackHome={handleBackHome}
+        onComplete={finishAfterPayment}
       />
     </SafeAreaView>
   );

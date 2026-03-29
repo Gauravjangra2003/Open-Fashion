@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import {
   Modal,
@@ -10,7 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, spacing, typography } from '../../constants/theme';
 
-export function PaymentSuccessModal({ visible, paymentId, onSubmit, onBackHome }) {
+export function PaymentSuccessModal({ visible, paymentId, onComplete }) {
   const id =
     paymentId ||
     `PAY-${Math.random().toString(36).slice(2, 10).toUpperCase()}`;
@@ -25,14 +26,29 @@ export function PaymentSuccessModal({ visible, paymentId, onSubmit, onBackHome }
             <Text style={styles.label}>Payment ID</Text>
             <Text style={styles.paymentId}>{id}</Text>
             <View style={styles.ratingRow}>
-              <Text style={styles.emoji}>⭐</Text>
-              <Text style={styles.emoji}>✨</Text>
-              <Text style={styles.emoji}>👔</Text>
+              <Ionicons
+                name="star"
+                size={28}
+                color={colors.black}
+                style={styles.ratingIcon}
+              />
+              <Ionicons
+                name="heart"
+                size={28}
+                color={colors.black}
+                style={styles.ratingIcon}
+              />
+              <Ionicons
+                name="shirt-outline"
+                size={28}
+                color={colors.black}
+                style={styles.ratingIcon}
+              />
             </View>
-            <Pressable style={styles.primary} onPress={onSubmit}>
+            <Pressable style={styles.primary} onPress={onComplete}>
               <Text style={styles.primaryText}>Submit</Text>
             </Pressable>
-            <Pressable style={styles.secondary} onPress={onBackHome}>
+            <Pressable style={styles.secondary} onPress={onComplete}>
               <Text style={styles.secondaryText}>Back to Home</Text>
             </Pressable>
           </View>
@@ -89,11 +105,11 @@ const styles = StyleSheet.create({
   ratingRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: spacing.md,
+    alignItems: 'center',
     marginBottom: spacing.xl,
   },
-  emoji: {
-    fontSize: 28,
+  ratingIcon: {
+    marginHorizontal: spacing.sm,
   },
   primary: {
     backgroundColor: colors.black,
