@@ -1,8 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useMemo, useRef, useState } from 'react';
 import {
-  Alert,
   FlatList,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -59,13 +59,9 @@ export function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.header}>
-        <Pressable
-          onPress={() => Alert.alert('Menu', 'Navigation drawer placeholder.')}
-          hitSlop={8}
-        >
-          <Ionicons name="menu-outline" size={26} color={colors.black} />
-        </Pressable>
-        <Logo size="sm" />
+        <View style={styles.headerLeft}>
+          <Logo size="sm" />
+        </View>
         <View style={styles.headerRight}>
           <Pressable onPress={() => searchRef.current?.focus()} hitSlop={8}>
             <Ionicons name="search-outline" size={22} color={colors.black} />
@@ -124,6 +120,7 @@ const styles = StyleSheet.create({
   safe: {
     flex: 1,
     backgroundColor: colors.background,
+    ...(Platform.OS === 'android' && { marginTop: spacing.md }),
   },
   header: {
     flexDirection: 'row',
@@ -133,6 +130,11 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
+  },
+  headerLeft: {
+    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   headerRight: {
     flexDirection: 'row',
