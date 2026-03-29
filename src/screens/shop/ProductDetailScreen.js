@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   Image,
   Pressable,
@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, spacing, typography } from '../../constants/theme';
 import { useStore } from '../../context/StoreContext';
@@ -15,10 +16,24 @@ import { productImageSource } from '../../utils/imageSource';
 
 export function ProductDetailScreen({ route, navigation }) {
   const { productId } = route.params;
-  const { getProductById, addToCart, toggleWishlist, isInWishlist } =
+  const { cart, getProductById, addToCart, toggleWishlist, isInWishlist } =
     useStore();
   const product = getProductById(productId);
   const saved = product ? isInWishlist(product.id) : false;
+
+  const handleAddToBag = useCallback(() => {
+    if (!product) return;
+    const line = cart.find((l) => l.productId === product.id);
+    const nextQty = (line?.quantity ?? 0) + 1;
+    addToCart(product.id, 1);
+    Toast.show({
+      type: 'success',
+      text1: 'Added to bag',
+      text2: `${product.name} · Quantity: ${nextQty}`,
+      position: 'bottom',
+      visibilityTime: 2000,
+    });
+  }, [product, cart, addToCart]);
 
   if (!product) {
     return (
@@ -54,10 +69,7 @@ export function ProductDetailScreen({ route, navigation }) {
             Crafted with premium materials. Designed for a refined silhouette
             and everyday comfort. Part of our menswear collection.
           </Text>
-          <Pressable
-            style={styles.primary}
-            onPress={() => addToCart(product.id, 1)}
-          >
+          <Pressable style={styles.primary} onPress={handleAddToBag}>
             <Text style={styles.primaryText}>Add to bag</Text>
           </Pressable>
         </View>
