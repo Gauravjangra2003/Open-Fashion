@@ -16,7 +16,7 @@ import { colors, spacing, typography } from '../../constants/theme';
 import { useStore } from '../../context/StoreContext';
 
 export function HomeScreen({ navigation }) {
-  const { products, cartCount } = useStore();
+  const { products, cartLineCount } = useStore();
   const [query, setQuery] = useState('');
   const searchRef = useRef(null);
 
@@ -72,10 +72,10 @@ export function HomeScreen({ navigation }) {
             style={styles.iconPad}
           >
             <Ionicons name="bag-outline" size={22} color={colors.black} />
-            {cartCount > 0 ? (
+            {cartLineCount > 0 ? (
               <View style={styles.badge}>
                 <Text style={styles.badgeText}>
-                  {cartCount > 9 ? '9+' : cartCount}
+                  {cartLineCount > 9 ? '9+' : cartLineCount}
                 </Text>
               </View>
             ) : null}

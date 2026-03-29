@@ -77,6 +77,9 @@ export function StoreProvider({ children }) {
     [cart]
   );
 
+  /** Distinct products in cart (line count) — for badge, not total units. */
+  const cartLineCount = useMemo(() => cart.length, [cart]);
+
   const value = useMemo(
     () => ({
       products,
@@ -85,6 +88,7 @@ export function StoreProvider({ children }) {
       wishlistProducts,
       cartTotal,
       cartCount,
+      cartLineCount,
       getProductById,
       addToCart,
       removeFromCart,
@@ -100,6 +104,7 @@ export function StoreProvider({ children }) {
       wishlistProducts,
       cartTotal,
       cartCount,
+      cartLineCount,
       getProductById,
       addToCart,
       removeFromCart,
