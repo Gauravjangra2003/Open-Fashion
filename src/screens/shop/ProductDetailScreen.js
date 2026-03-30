@@ -35,6 +35,19 @@ export function ProductDetailScreen({ route, navigation }) {
     });
   }, [product, cart, addToCart]);
 
+  const handleWishlistPress = useCallback(() => {
+    if (!product) return;
+    const wasInWishlist = isInWishlist(product.id);
+    toggleWishlist(product.id);
+    Toast.show({
+      type: 'success',
+      text1: wasInWishlist ? 'Removed from wishlist' : 'Added to wishlist',
+      text2: product.name,
+      position: 'bottom',
+      visibilityTime: 2000,
+    });
+  }, [product, isInWishlist, toggleWishlist]);
+
   if (!product) {
     return (
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
@@ -49,7 +62,7 @@ export function ProductDetailScreen({ route, navigation }) {
         <Pressable onPress={() => navigation.goBack()} hitSlop={12}>
           <Ionicons name="chevron-back" size={26} color={colors.black} />
         </Pressable>
-        <Pressable onPress={() => toggleWishlist(product.id)} hitSlop={12}>
+        <Pressable onPress={handleWishlistPress} hitSlop={12}>
           <Ionicons
             name={saved ? 'heart' : 'heart-outline'}
             size={24}
