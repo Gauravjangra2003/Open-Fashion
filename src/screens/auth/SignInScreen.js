@@ -11,12 +11,21 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Logo } from '../../components/common';
 import { colors, spacing, typography } from '../../constants/theme';
+import { showAuthValidationToast } from '../../utils/authToast';
+import { digitsOnly } from '../../utils/digitsOnly';
 
 export function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const isComplete =
+    email.trim().length > 0 && password.trim().length > 0;
+
   const submit = () => {
+    if (!isComplete) {
+      showAuthValidationToast();
+      return;
+    }
     navigation.replace('Main');
   };
 
@@ -45,11 +54,15 @@ export function SignInScreen({ navigation }) {
             style={styles.input}
             placeholder="••••••••"
             placeholderTextColor={colors.textMuted}
+            keyboardType="number-pad"
             secureTextEntry
             value={password}
-            onChangeText={setPassword}
+            onChangeText={(t) => setPassword(digitsOnly(t))}
           />
-          <Pressable style={styles.primary} onPress={submit}>
+          <Pressable
+            style={[styles.primary, !isComplete && styles.primaryDisabled]}
+            onPress={submit}
+          >
             <Text style={styles.primaryText}>Sign In</Text>
           </Pressable>
           <Pressable
@@ -106,6 +119,9 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     alignItems: 'center',
     marginTop: spacing.sm,
+  },
+  primaryDisabled: {
+    backgroundColor: '#C8C8C8',
   },
   primaryText: {
     color: colors.white,

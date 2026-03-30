@@ -26,7 +26,7 @@ export function SettingsScreen({ navigation }) {
         <Text style={styles.label}>Name</Text>
         <Text style={styles.value}>John Wick</Text>
         <Text style={[styles.label, styles.gap]}>Email</Text>
-        <Text style={styles.value}>johnwick1985r@example.com</Text>
+        <Text style={styles.value}>johnwick1985@example.com</Text>
         <Text style={[styles.label, styles.gap]}>Member since</Text>
         <Text style={styles.value}>2026</Text>
       </View>
