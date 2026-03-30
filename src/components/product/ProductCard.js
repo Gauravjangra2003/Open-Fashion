@@ -7,13 +7,26 @@ import {
   Text,
   View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { colors, spacing, typography } from '../../constants/theme';
 import { useStore } from '../../context/StoreContext';
 import { productImageSource } from '../../utils/imageSource';
 
 export function ProductCard({ product, onPress }) {
-  const { toggleWishlist, isInWishlist, addToCart } = useStore();
+  const { cart, toggleWishlist, isInWishlist, addToCart } = useStore();
   const saved = isInWishlist(product.id);
+  const handleAddToBag = () => {
+    const line = cart.find((l) => l.productId === product.id);
+    const nextQty = (line?.quantity ?? 0) + 1;
+    addToCart(product.id, 1);
+    Toast.show({
+      type: 'success',
+      text1: 'Added to bag',
+      text2: `${product.name} · Quantity: ${nextQty}`,
+      position: 'bottom',
+      visibilityTime: 2000,
+    });
+  };
 
   return (
     <Pressable style={styles.card} onPress={() => onPress?.(product)}>
@@ -41,7 +54,7 @@ export function ProductCard({ product, onPress }) {
       <Text style={styles.price}>${product.price}</Text>
       <Pressable
         style={styles.addBtn}
-        onPress={() => addToCart(product.id, 1)}
+        onPress={handleAddToBag}
       >
         <Text style={styles.addText}>Add to bag</Text>
       </Pressable>
