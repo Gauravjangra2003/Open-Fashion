@@ -1,20 +1,19 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
-  Dimensions,
   FlatList,
   Image,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, spacing, typography } from '../../constants/theme';
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-
-/** Tall enough to show full portraits without harsh cropping; `contain` scales inside this box. */
-const ONBOARDING_IMAGE_HEIGHT = Math.min(SCREEN_HEIGHT * 0.52, SCREEN_WIDTH * 1.35);
+const webSlideNoSelect =
+  Platform.OS === 'web' ? { userSelect: 'none' } : undefined;
 
 const SLIDES = [
   {
@@ -38,65 +37,130 @@ const SLIDES = [
 ];
 
 export function OnboardingScreen({ navigation }) {
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const listRef = useRef(null);
 
-  const onScroll = (e) => {
-    const x = e.nativeEvent.contentOffset.x;
-    const i = Math.round(x / SCREEN_WIDTH);
-    setIndex(i);
-  };
+  const imageHeight = Math.min(screenHeight * 0.52, screenWidth * 1.35);
 
-  const goNext = () => {
+  const syncIndexFromOffset = useCallback(
+    (x) => {
+      const w = Math.max(screenWidth, 1);
+      const i = Math.min(
+        SLIDES.length - 1,
+        Math.max(0, Math.round(x / w))
+      );
+      setIndex((prev) => (prev !== i ? i : prev));
+    },
+    [screenWidth]
+  );
+
+  const onScroll = useCallback(
+    (e) => {
+      syncIndexFromOffset(e.nativeEvent.contentOffset.x);
+    },
+    [syncIndexFromOffset]
+  );
+
+  const onScrollEnd = useCallback(
+    (e) => {
+      syncIndexFromOffset(e.nativeEvent.contentOffset.x);
+    },
+    [syncIndexFromOffset]
+  );
+
+  const goNext = useCallback(() => {
     if (index < SLIDES.length - 1) {
-      listRef.current?.scrollToIndex({ index: index + 1, animated: true });
+      const next = index + 1;
+      listRef.current?.scrollToOffset({
+        offset: screenWidth * next,
+        animated: true,
+      });
     } else {
       navigation.replace('SignIn');
     }
-  };
+  }, [index, navigation, screenWidth]);
+
+  const getItemLayout = useCallback(
+    (_, dataIndex) => ({
+      length: screenWidth,
+      offset: screenWidth * dataIndex,
+      index: dataIndex,
+    }),
+    [screenWidth]
+  );
+
+  const renderItem = useCallback(
+    ({ item }) => (
+      <View
+        style={[
+          styles.slide,
+          { width: screenWidth },
+          Platform.OS === 'web' && webSlideNoSelect,
+        ]}
+      >
+        <View style={[styles.imageWrap, { width: screenWidth, height: imageHeight }]}>
+          <Image
+            source={item.image}
+            style={styles.image}
+            resizeMode="contain"
+            draggable={false}
+          />
+          <View style={styles.imageOverlay} pointerEvents="none" />
+        </View>
+        <View style={styles.textBlock}>
+          <Text style={styles.title} selectable={false}>
+            {item.title}
+          </Text>
+          <Text style={styles.subtitle} selectable={false}>
+            {item.subtitle}
+          </Text>
+        </View>
+      </View>
+    ),
+    [imageHeight, screenWidth]
+  );
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-      <FlatList
-        ref={listRef}
-        style={styles.list}
-        contentContainerStyle={styles.listContent}
-        data={SLIDES}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.key}
-        onMomentumScrollEnd={onScroll}
-        renderItem={({ item }) => (
-          <View style={styles.slide}>
-            <View style={styles.imageWrap}>
-              <Image
-                source={item.image}
-                style={styles.image}
-                resizeMode="contain"
-              />
-              <View style={styles.imageOverlay} pointerEvents="none" />
-            </View>
-            <View style={styles.textBlock}>
-              <Text style={styles.title}>{item.title}</Text>
-              <Text style={styles.subtitle}>{item.subtitle}</Text>
-            </View>
-          </View>
-        )}
-      />
-      <View style={styles.dots}>
-        {SLIDES.map((_, i) => (
-          <View
-            key={i}
-            style={[styles.dot, i === index && styles.dotActive]}
-          />
-        ))}
+      <View style={styles.listSection}>
+        <FlatList
+          ref={listRef}
+          style={[styles.list, Platform.OS === 'web' && styles.listWeb]}
+          contentContainerStyle={styles.listContent}
+          data={SLIDES}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => item.key}
+          getItemLayout={getItemLayout}
+          removeClippedSubviews={false}
+          scrollEventThrottle={16}
+          onScroll={onScroll}
+          onMomentumScrollEnd={onScrollEnd}
+          onScrollEndDrag={onScrollEnd}
+          keyboardShouldPersistTaps="handled"
+          renderItem={renderItem}
+        />
       </View>
-      <Pressable style={styles.cta} onPress={goNext}>
-        <Text style={styles.ctaText}>
-          {index === SLIDES.length - 1 ? 'Get Started' : 'Next'}
-        </Text>
-      </Pressable>
+      <View style={styles.footer} pointerEvents="box-none">
+        <View style={styles.dots}>
+          {SLIDES.map((_, i) => (
+            <View
+              key={i}
+              style={[styles.dot, i === index && styles.dotActive]}
+            />
+          ))}
+        </View>
+        <Pressable
+          style={({ pressed }) => [styles.cta, pressed && styles.ctaPressed]}
+          onPress={goNext}
+        >
+          <Text style={styles.ctaText}>
+            {index === SLIDES.length - 1 ? 'Get Started' : 'Next'}
+          </Text>
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 }
@@ -106,20 +170,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
+  listSection: {
+    flex: 1,
+    minHeight: 0,
+  },
   list: {
     flex: 1,
   },
+  listWeb: {
+    overflowX: 'scroll',
+    overflowY: 'hidden',
+    touchAction: 'pan-x',
+    WebkitOverflowScrolling: 'touch',
+  },
   listContent: {
-    flexGrow: 1,
+    flexDirection: 'row',
+    alignItems: 'stretch',
   },
   slide: {
-    width: SCREEN_WIDTH,
-    flex: 1,
     alignSelf: 'stretch',
   },
   imageWrap: {
-    width: SCREEN_WIDTH,
-    height: ONBOARDING_IMAGE_HEIGHT,
     backgroundColor: colors.background,
     justifyContent: 'center',
     alignItems: 'center',
@@ -147,6 +218,10 @@ const styles = StyleSheet.create({
     ...typography.subtitle,
     lineHeight: 22,
   },
+  footer: {
+    zIndex: 2,
+    backgroundColor: colors.white,
+  },
   dots: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -169,6 +244,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.black,
     paddingVertical: spacing.md,
     alignItems: 'center',
+  },
+  ctaPressed: {
+    opacity: 0.88,
   },
   ctaText: {
     color: colors.white,
