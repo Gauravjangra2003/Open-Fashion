@@ -30,9 +30,13 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
     borderRadius: 2,
     overflow: 'hidden',
+    backgroundColor: colors.background,
   },
   image: {
-    minHeight: 200,
+    // Keep banner dimensions stable across iOS/Android so `cover`
+    // crops the same way on both platforms.
+    width: '100%',
+    height: 200,
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
   },
