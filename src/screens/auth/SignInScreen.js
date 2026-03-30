@@ -12,8 +12,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Logo } from '../../components/common';
 import { useStore } from '../../context/StoreContext';
 import { colors, spacing, typography } from '../../constants/theme';
-import { showAuthValidationToast } from '../../utils/authToast';
-import { digitsOnly } from '../../utils/digitsOnly';
+import { showAuthValidationToast, showPasswordLengthToast } from '../../utils/authToast';
+import { digitsOnly, PASSWORD_DIGIT_LENGTH } from '../../utils/digitsOnly';
 
 export function SignInScreen({ navigation }) {
   const { setSessionEmail } = useStore();
@@ -21,11 +21,15 @@ export function SignInScreen({ navigation }) {
   const [password, setPassword] = useState('');
 
   const isComplete =
-    email.trim().length > 0 && password.trim().length > 0;
+    email.trim().length > 0 && password.length === PASSWORD_DIGIT_LENGTH;
 
   const submit = () => {
-    if (!isComplete) {
+    if (!email.trim()) {
       showAuthValidationToast();
+      return;
+    }
+    if (password.length !== PASSWORD_DIGIT_LENGTH) {
+      showPasswordLengthToast();
       return;
     }
     setSessionEmail(email.trim());
@@ -60,7 +64,10 @@ export function SignInScreen({ navigation }) {
             keyboardType="number-pad"
             secureTextEntry
             value={password}
-            onChangeText={(t) => setPassword(digitsOnly(t))}
+            onChangeText={(t) =>
+              setPassword(digitsOnly(t).slice(0, PASSWORD_DIGIT_LENGTH))
+            }
+            maxLength={PASSWORD_DIGIT_LENGTH}
           />
           <Pressable
             style={[styles.primary, !isComplete && styles.primaryDisabled]}

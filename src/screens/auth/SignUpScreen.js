@@ -14,9 +14,10 @@ import { useStore } from '../../context/StoreContext';
 import { colors, spacing, typography } from '../../constants/theme';
 import {
   showAuthValidationToast,
+  showPasswordLengthToast,
   showPasswordMismatchToast,
 } from '../../utils/authToast';
-import { digitsOnly } from '../../utils/digitsOnly';
+import { digitsOnly, PASSWORD_DIGIT_LENGTH } from '../../utils/digitsOnly';
 
 export function SignUpScreen({ navigation }) {
   const { setSessionEmail } = useStore();
@@ -26,12 +27,19 @@ export function SignUpScreen({ navigation }) {
 
   const isComplete =
     email.trim().length > 0 &&
-    password.trim().length > 0 &&
-    confirmPassword.trim().length > 0;
+    password.length === PASSWORD_DIGIT_LENGTH &&
+    confirmPassword.length === PASSWORD_DIGIT_LENGTH;
 
   const submit = () => {
-    if (!isComplete) {
+    if (!email.trim()) {
       showAuthValidationToast();
+      return;
+    }
+    if (
+      password.length !== PASSWORD_DIGIT_LENGTH ||
+      confirmPassword.length !== PASSWORD_DIGIT_LENGTH
+    ) {
+      showPasswordLengthToast();
       return;
     }
     if (password !== confirmPassword) {
@@ -70,7 +78,10 @@ export function SignUpScreen({ navigation }) {
             keyboardType="number-pad"
             secureTextEntry
             value={password}
-            onChangeText={(t) => setPassword(digitsOnly(t))}
+            onChangeText={(t) =>
+              setPassword(digitsOnly(t).slice(0, PASSWORD_DIGIT_LENGTH))
+            }
+            maxLength={PASSWORD_DIGIT_LENGTH}
           />
           <Text style={styles.label}>Confirm Password</Text>
           <TextInput
@@ -80,7 +91,10 @@ export function SignUpScreen({ navigation }) {
             keyboardType="number-pad"
             secureTextEntry
             value={confirmPassword}
-            onChangeText={(t) => setConfirmPassword(digitsOnly(t))}
+            onChangeText={(t) =>
+              setConfirmPassword(digitsOnly(t).slice(0, PASSWORD_DIGIT_LENGTH))
+            }
+            maxLength={PASSWORD_DIGIT_LENGTH}
           />
           <Pressable
             style={[styles.primary, !isComplete && styles.primaryDisabled]}

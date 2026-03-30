@@ -21,3 +21,14 @@ export function showPasswordMismatchToast() {
     topOffset: 56,
   });
 }
+
+export function showPasswordLengthToast() {
+  Toast.show({
+    type: 'validation',
+    text1: '8-digit password',
+    text2: 'Enter exactly 8 numbers for your password.',
+    position: 'top',
+    visibilityTime: 2500,
+    topOffset: 56,
+  });
+}
