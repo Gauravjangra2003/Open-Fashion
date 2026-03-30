@@ -194,6 +194,12 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
     fontSize: 15,
     color: colors.text,
+    // React Native Web focus ring (shows as a colored border on tap).
+    // We only want the outer wrapper border.
+    outlineStyle: 'none',
+    outlineWidth: 0,
+    borderWidth: 0,
+    backgroundColor: 'transparent',
   },
   sectionHead: {
     paddingHorizontal: spacing.md,
