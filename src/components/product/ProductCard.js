@@ -30,8 +30,8 @@ export function ProductCard({ product, onPress }) {
         >
           <Ionicons
             name={saved ? 'heart' : 'heart-outline'}
-            size={20}
-            color={saved ? colors.black : colors.white}
+            size={22}
+            color={colors.black}
           />
         </Pressable>
       </View>
