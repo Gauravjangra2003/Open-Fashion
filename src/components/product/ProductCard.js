@@ -15,6 +15,18 @@ import { productImageSource } from '../../utils/imageSource';
 export function ProductCard({ product, onPress }) {
   const { cart, toggleWishlist, isInWishlist, addToCart } = useStore();
   const saved = isInWishlist(product.id);
+  const handleWishlistToggle = () => {
+    const wasInWishlist = isInWishlist(product.id);
+    toggleWishlist(product.id);
+    Toast.show({
+      type: 'success',
+      text1: wasInWishlist ? 'Removed from wishlist' : 'Added to wishlist',
+      text2: product.name,
+      position: 'bottom',
+      visibilityTime: 2000,
+    });
+  };
+
   const handleAddToBag = () => {
     const line = cart.find((l) => l.productId === product.id);
     const nextQty = (line?.quantity ?? 0) + 1;
@@ -38,7 +50,7 @@ export function ProductCard({ product, onPress }) {
         />
         <Pressable
           style={styles.heartBtn}
-          onPress={() => toggleWishlist(product.id)}
+          onPress={handleWishlistToggle}
           hitSlop={12}
         >
           <Ionicons
