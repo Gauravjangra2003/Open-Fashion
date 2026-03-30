@@ -128,6 +128,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.md,
+    // Android-only: gives extra space inside the header so it doesn't feel
+    // flush to the top.
+    paddingTop: Platform.OS === 'android' ? spacing.sm : 0,
     paddingBottom: spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
