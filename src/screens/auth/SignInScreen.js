@@ -10,11 +10,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Logo } from '../../components/common';
+import { useStore } from '../../context/StoreContext';
 import { colors, spacing, typography } from '../../constants/theme';
 import { showAuthValidationToast } from '../../utils/authToast';
 import { digitsOnly } from '../../utils/digitsOnly';
 
 export function SignInScreen({ navigation }) {
+  const { setSessionEmail } = useStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,6 +28,7 @@ export function SignInScreen({ navigation }) {
       showAuthValidationToast();
       return;
     }
+    setSessionEmail(email.trim());
     navigation.replace('Main');
   };
 

@@ -7,6 +7,7 @@ export function StoreProvider({ children }) {
   const [products] = useState(() => productsData);
   const [cart, setCart] = useState([]);
   const [wishlistIds, setWishlistIds] = useState([]);
+  const [userEmail, setUserEmail] = useState('');
 
   const getProductById = useCallback(
     (id) => products.find((p) => p.id === id),
@@ -80,6 +81,14 @@ export function StoreProvider({ children }) {
   /** Distinct products in cart (line count) — for badge, not total units. */
   const cartLineCount = useMemo(() => cart.length, [cart]);
 
+  const setSessionEmail = useCallback((email) => {
+    setUserEmail(String(email).trim());
+  }, []);
+
+  const clearSession = useCallback(() => {
+    setUserEmail('');
+  }, []);
+
   const value = useMemo(
     () => ({
       products,
@@ -89,6 +98,9 @@ export function StoreProvider({ children }) {
       cartTotal,
       cartCount,
       cartLineCount,
+      userEmail,
+      setSessionEmail,
+      clearSession,
       getProductById,
       addToCart,
       removeFromCart,
@@ -105,6 +117,9 @@ export function StoreProvider({ children }) {
       cartTotal,
       cartCount,
       cartLineCount,
+      userEmail,
+      setSessionEmail,
+      clearSession,
       getProductById,
       addToCart,
       removeFromCart,

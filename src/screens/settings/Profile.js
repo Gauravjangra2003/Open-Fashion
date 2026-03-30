@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useStore } from '../../context/StoreContext';
 import { colors, spacing, typography } from '../../constants/theme';
+import { displayNameFromEmail } from '../../utils/displayNameFromEmail';
 
 function getRootNavigation(navigation) {
   let nav = navigation;
@@ -12,7 +14,17 @@ function getRootNavigation(navigation) {
 }
 
 export function SettingsScreen({ navigation }) {
+  const { userEmail, clearSession } = useStore();
+
+  const displayName = useMemo(
+    () => (userEmail ? displayNameFromEmail(userEmail) : '—'),
+    [userEmail]
+  );
+
+  const memberYear = useMemo(() => new Date().getFullYear(), []);
+
   const logout = () => {
+    clearSession();
     getRootNavigation(navigation).reset({
       index: 0,
       routes: [{ name: 'SignIn' }],
@@ -24,11 +36,11 @@ export function SettingsScreen({ navigation }) {
       <Text style={styles.title}>Profile</Text>
       <View style={styles.card}>
         <Text style={styles.label}>Name</Text>
-        <Text style={styles.value}>John Wick</Text>
+        <Text style={styles.value}>{displayName}</Text>
         <Text style={[styles.label, styles.gap]}>Email</Text>
-        <Text style={styles.value}>johnwick1985@example.com</Text>
+        <Text style={styles.value}>{userEmail || '—'}</Text>
         <Text style={[styles.label, styles.gap]}>Member since</Text>
-        <Text style={styles.value}>2026</Text>
+        <Text style={styles.value}>{memberYear}</Text>
       </View>
       <Pressable style={styles.logout} onPress={logout}>
         <Text style={styles.logoutText}>Logout</Text>
