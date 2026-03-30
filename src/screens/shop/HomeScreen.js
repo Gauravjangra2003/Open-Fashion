@@ -120,7 +120,8 @@ const styles = StyleSheet.create({
   safe: {
     flex: 1,
     backgroundColor: colors.background,
-    ...(Platform.OS === 'android' && { marginTop: spacing.md }),
+    // Extra top gap on Android so the header isn't too close to the top edge.
+    ...(Platform.OS === 'android' && { marginTop: spacing.lg }),
   },
   header: {
     flexDirection: 'row',
