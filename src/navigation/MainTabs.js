@@ -19,10 +19,10 @@ export function MainTabs() {
         tabBarStyle: {
           backgroundColor: colors.white,
           borderTopColor: colors.border,
-          height: Platform.OS === 'ios' ? 88 : 64,
-          // On Android, add a little extra top padding so icons/labels
-          // don't feel too close to the top of the tab bar.
-          paddingTop: Platform.OS === 'ios' ? 8 : 12,
+          // Give Android a bit more vertical room so labels stay visible
+          // and the content feels slightly lower (more gap from the top).
+          height: Platform.OS === 'ios' ? 88 : 72,
+          paddingTop: 8,
           paddingBottom: Platform.OS === 'ios' ? 28 : 12,
         },
         tabBarLabelStyle: {
