@@ -33,7 +33,11 @@ export function CartScreen({ navigation }) {
             if (!p) return null;
             return (
               <View key={line.productId} style={styles.row}>
-                <Image source={productImageSource(p.image)} style={styles.thumb} />
+                <Image
+                  source={productImageSource(p.image)}
+                  style={styles.thumb}
+                  resizeMode="contain"
+                />
                 <View style={styles.meta}>
                   <Text style={styles.name}>{p.name}</Text>
                   <Text style={styles.price}>${p.price}</Text>
@@ -117,7 +121,7 @@ const styles = StyleSheet.create({
   thumb: {
     width: 80,
     height: 104,
-    backgroundColor: colors.border,
+    backgroundColor: colors.white,
   },
   meta: {
     flex: 1,

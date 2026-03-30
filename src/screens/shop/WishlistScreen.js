@@ -21,7 +21,11 @@ export function WishlistScreen() {
         }
         renderItem={({ item }) => (
           <View style={styles.row}>
-            <Image source={productImageSource(item.image)} style={styles.thumb} />
+            <Image
+              source={productImageSource(item.image)}
+              style={styles.thumb}
+              resizeMode="contain"
+            />
             <View style={styles.meta}>
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.price}>${item.price}</Text>
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
   thumb: {
     width: 72,
     height: 96,
-    backgroundColor: colors.border,
+    backgroundColor: colors.white,
   },
   meta: {
     flex: 1,

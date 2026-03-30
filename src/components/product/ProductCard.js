@@ -18,7 +18,11 @@ export function ProductCard({ product, onPress }) {
   return (
     <Pressable style={styles.card} onPress={() => onPress?.(product)}>
       <View style={styles.imageWrap}>
-        <Image source={productImageSource(product.image)} style={styles.image} />
+        <Image
+          source={productImageSource(product.image)}
+          style={styles.image}
+          resizeMode="contain"
+        />
         <Pressable
           style={styles.heartBtn}
           onPress={() => toggleWishlist(product.id)}
@@ -60,7 +64,7 @@ const styles = StyleSheet.create({
   imageWrap: {
     position: 'relative',
     aspectRatio: 3 / 4,
-    backgroundColor: colors.border,
+    backgroundColor: colors.white,
   },
   image: {
     width: '100%',

@@ -59,7 +59,11 @@ export function ProductDetailScreen({ route, navigation }) {
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.imageWrap}>
-          <Image source={productImageSource(product.image)} style={styles.image} />
+          <Image
+            source={productImageSource(product.image)}
+            style={styles.image}
+            resizeMode="contain"
+          />
         </View>
         <View style={styles.body}>
           <Text style={styles.cat}>{product.category}</Text>
@@ -95,7 +99,7 @@ const styles = StyleSheet.create({
   },
   imageWrap: {
     aspectRatio: 3 / 4,
-    backgroundColor: colors.border,
+    backgroundColor: colors.white,
     marginHorizontal: spacing.md,
   },
   image: {
